@@ -20,7 +20,7 @@ public class Mouse {
     if (state.action.equals("Left button pressed")) {
       notifySubscribers(MouseEventType.SingleClick);
     }
-    state.setState("Left button released", currentTimeInMilliseconds);
+    state.setState("Idle", currentTimeInMilliseconds);
   }
 
   public void move(Position from, Position to,long
