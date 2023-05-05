@@ -24,4 +24,20 @@ class MouseEventsShould {
     verify(listener).handleMouseEvent(MouseEventType.SingleClick);
   }
 
+  @Test
+  void notify_listeners_that_a_double_click_has_occurred() {
+    MouseEventListener listener = mock(MouseEventListener.class);
+    Mouse mouse = new Mouse();
+    mouse.subscribe(listener);
+
+    long initialTimestamp = 0;
+    long millisecondsLater = 100;
+    mouse.pressLeftButton(initialTimestamp);
+    mouse.releaseLeftButton(initialTimestamp + millisecondsLater);
+    mouse.pressLeftButton(initialTimestamp + millisecondsLater * 2);
+    mouse.releaseLeftButton(initialTimestamp + millisecondsLater * 3);
+
+    verify(listener).handleMouseEvent(MouseEventType.DoubleClick);
+  }
+
 }
