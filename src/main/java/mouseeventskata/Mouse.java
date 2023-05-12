@@ -17,10 +17,24 @@ public class Mouse {
   public void releaseLeftButton(long currentTimeInMilliseconds){
     /*... debe notificar a los suscriptores ...*/
     /*... y gestionar el estado ...*/
-    if (state.action.equals("Left button pressed")) {
+    boolean doubleClickTimeWindowPassed = (currentTimeInMilliseconds - state.executionTimestamp) > timeWindowInMillisecondsForDoubleClick;
+    if (state.action.equals("Left button pressed") && doubleClickTimeWindowPassed) {
       notifySubscribers(MouseEventType.SingleClick);
+      state.setState("Idle", currentTimeInMilliseconds);
     }
-    state.setState("Idle", currentTimeInMilliseconds);
+    if (state.action.equals("Left button pressed") && !doubleClickTimeWindowPassed) {
+      state.setState("Maybe double click", state.executionTimestamp);
+    }
+    if (state.action.equals("Maybe double click & left button pressed (back)") && doubleClickTimeWindowPassed) {
+      notifySubscribers(MouseEventType.SingleClick);
+      state.setState("Idle", currentTimeInMilliseconds);
+    }
+
+
+
+    else if (state.action.equals("Maybe double click")) {
+
+    }
   }
 
   public void move(Position from, Position to,long
